@@ -23,7 +23,7 @@ gcloud compute networks create griffin-dev-vpc --subnet-mode custom
 gcloud compute networks subnets create griffin-dev-wp --network=griffin-dev-vpc --region us-east1 --range=192.168.16.0/20
 
 gcloud compute networks subnets create griffin-dev-mgmt --network=griffin-dev-vpc --region us-east1 --range=192.168.32.0/20
-BASH
+
 
 
 Task - 2 : Create production VPC manually-
@@ -39,7 +39,7 @@ gcloud deployment-manager deployments create prod-network \
     --config=prod-network.yaml
 
 cd ..
-BASH
+
 
 
 Task - 3 : Create bastion host-
@@ -50,7 +50,7 @@ gcloud compute instances create bastion --network-interface=network=griffin-dev-
 gcloud compute firewall-rules create fw-ssh-dev --source-ranges=0.0.0.0/0 --target-tags ssh --allow=tcp:22 --network=griffin-dev-vpc
 
 gcloud compute firewall-rules create fw-ssh-prod --source-ranges=0.0.0.0/0 --target-tags ssh --allow=tcp:22 --network=griffin-prod-vpc
-BASH
+
 
 
 Task - 4 : Create and configure Cloud SQL Instance-
@@ -65,7 +65,7 @@ GRANT ALL PRIVILEGES ON wordpress.* TO "wp_user"@"%" IDENTIFIED BY "stormwind_ru
 FLUSH PRIVILEGES;
 
 exit
-BASH
+
 
 
 Task - 5 : Create Kubernetes cluster-
@@ -83,7 +83,7 @@ gcloud container clusters get-credentials griffin-dev --zone us-east1-b
 cd ~/
 
 gsutil cp -r gs://cloud-training/gsp321/wp-k8s .
-BASH
+
 
 
 Task - 6 : Prepare the Kubernetes cluster-
@@ -102,7 +102,7 @@ gcloud iam service-accounts keys create key.json \
     --iam-account=cloud-sql-proxy@$GOOGLE_CLOUD_PROJECT.iam.gserviceaccount.com
 kubectl create secret generic cloudsql-instance-credentials \
     --from-file key.json
-BASH
+
 
 
 Task - 7 : Create a WordPress deployment
@@ -114,7 +114,7 @@ Save.
 
 kubectl create -f wp-deployment.yaml
 kubectl create -f wp-service.yaml
-BASH
+
 
 
 Task - 8 : Enable monitoring
