@@ -9,6 +9,12 @@ Task - 6 : Prepare the Kubernetes cluster
 Task - 7 : Create a WordPress deployment
 Task - 8 : Enable monitoring
 Task - 9 : Provide access for an additional engineer
+
+
+
+
+
+
 Task - 1 : Create development VPC manually
 gcloud compute networks create griffin-dev-vpc --subnet-mode custom
 
@@ -16,6 +22,8 @@ gcloud compute networks subnets create griffin-dev-wp --network=griffin-dev-vpc 
 
 gcloud compute networks subnets create griffin-dev-mgmt --network=griffin-dev-vpc --region us-east1 --range=192.168.32.0/20
 BASH
+
+
 Task - 2 : Create production VPC manually
 gsutil cp -r gs://cloud-training/gsp321/dm .
 
@@ -28,6 +36,8 @@ gcloud deployment-manager deployments create prod-network \
 
 cd ..
 BASH
+
+
 Task - 3 : Create bastion host
 gcloud compute instances create bastion --network-interface=network=griffin-dev-vpc,subnet=griffin-dev-mgmt  --network-interface=network=griffin-prod-vpc,subnet=griffin-prod-mgmt --tags=ssh --zone=us-east1-b
 
@@ -35,6 +45,8 @@ gcloud compute firewall-rules create fw-ssh-dev --source-ranges=0.0.0.0/0 --targ
 
 gcloud compute firewall-rules create fw-ssh-prod --source-ranges=0.0.0.0/0 --target-tags ssh --allow=tcp:22 --network=griffin-prod-vpc
 BASH
+
+
 Task - 4 : Create and configure Cloud SQL Instance
 gcloud sql instances create griffin-dev-db --root-password password --region=us-east1
 
@@ -46,6 +58,8 @@ FLUSH PRIVILEGES;
 
 exit
 BASH
+
+
 Task - 5 : Create Kubernetes cluster
 gcloud container clusters create griffin-dev \
   --network griffin-dev-vpc \
@@ -61,6 +75,8 @@ cd ~/
 
 gsutil cp -r gs://cloud-training/gsp321/wp-k8s .
 BASH
+
+
 Task - 6 : Prepare the Kubernetes cluster
 Open Editor -> wp-k8s -> wp-env.yaml Change username and password to:
 username : wp_user
@@ -76,6 +92,8 @@ gcloud iam service-accounts keys create key.json \
 kubectl create secret generic cloudsql-instance-credentials \
     --from-file key.json
 BASH
+
+
 Task - 7 : Create a WordPress deployment
 In editor: wp-deployment.yaml -> replace YOUR_SQL_INSTANCE with griffin-dev-db.
 
@@ -84,6 +102,8 @@ Save.
 kubectl create -f wp-deployment.yaml
 kubectl create -f wp-service.yaml
 BASH
+
+
 Task - 8 : Enable monitoring
 Navigation Menu -> Kubernetes Engine -> Services and Ingress -> Copy Endpoint's address.
 
@@ -96,6 +116,8 @@ Next -> Target
    Path : /
 YML
 Next -> Next -> Create
+
+
 Task - 9 : Provide access for an additional engineer
 Navigation Menu -> IAM & Admin -> IAM -> ADD
 New Member : {Username 2 from Lab instruction page}
